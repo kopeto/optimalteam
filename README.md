@@ -23,9 +23,11 @@ In example:
 ### Athlete file:
 It should look like:
 
+```
 N
 athlete_name athlete_price athlete_points athlete_country athlete_discipline
 ...
+```
 
 
 N is the number of athletes.
