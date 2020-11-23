@@ -20,13 +20,13 @@ In example:
 ./solve < list.txt
 ```
 
-### Athletes file
+### Athlete file:
 It should look like:
 
-<N> 
-<paddler's name> <price> <points> <country> <discipline>
-.
-.
-.
+N
+athlete_name athlete_price athlete_points athlete_country athlete_discipline
+...
 
-N is Number of rows with paddlers info.
+
+N is the number of athletes.
+Next rows correspond to each athlete's info.
