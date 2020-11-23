@@ -7,7 +7,7 @@ Allyn  	1400	89	SLO	K1M
 Prince  	4516	70	POR	K1M
 Cinthia  	6091	51	SUI	K1M
 Dane  	8567	51	LIB	K1W
-Tifany  	8861	96	GER	C1W
+Tifany  	161	96	FRA	C1W
 Larita  	4403	92	SLO	K1W
 Roger  	4178	31	BRA	C1W
 Ed  	7205	75	AUS	C1W
@@ -33,7 +33,7 @@ Phoebe  	5040	14	AUT	C1W
 Graciela  	6850	8	AUT	C1W
 Ian  	3566	94	SLO	K1W
 Doretta  	7610	92	FRA	K1W
-Karoline  	1956	99	SUI	K1M
+Karoline  	1956	99	FRA	K1M
 Ellan  	2204	83	SVK	C1W
 Josefina  	9972	59	GER	K1M
 Twana  	6735	16	FRA	C1W
