@@ -1,5 +1,7 @@
 #include "Team.h"
 
+Team::Team(const int SIZE) : max_size(SIZE) {}
+
 size_t Team::size() const
 {
     return athletes.size();
@@ -7,7 +9,7 @@ size_t Team::size() const
 
 bool  Team::is_full() const
 {
-    return athletes.size() >= TEAM_SIZE;
+    return athletes.size() >= max_size;
 }
 
 void  Team::push(Athlete* ath)

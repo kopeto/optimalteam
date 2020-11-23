@@ -4,12 +4,13 @@
 
 #include "Athlete.h"
 
-#define TEAM_SIZE 4
-#define MAX_PER_COUNTRY 2
 
 struct Team
 {
+    Team(const int MAX_SIZE); 
+
     std::vector<Athlete *> athletes;
+    const size_t max_size;
 
     size_t size() const;
     bool is_full() const;

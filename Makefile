@@ -1,10 +1,11 @@
 #ULTRA BASIC MAKEFILE
-TARGET=solve
-SOURCES=solve.cpp Team.cpp 
+TARGET = solve
+SOURCES = solve.cpp Team.cpp 
+HEADERS = Team.h Athlete.h
 OBJECTS = $(SOURCES:.cpp=.o)
 
-CXXFLAGS=-O3
-CXX=g++
+CXXFLAGS = -O3
+CXX = g++
 
 
 all: $(TARGET)
