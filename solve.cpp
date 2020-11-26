@@ -5,6 +5,7 @@
 #include <set>
 
 #include "Team.h"
+#include "Timer.hpp"
 
 auto get_all_athletes()
 {
@@ -35,9 +36,11 @@ void solver(Team &current_team, std::vector<Athlete> &athletes, int last_incorpo
     {
         n++;
         //Apply Team constraints
-        // NO CONSTRAIN BY NOW. ONLY BUDGET
         if (
-            Team::candidate.points() < current_team.points() && current_team.at_least_1_per_discipline() && current_team.per_country_max(max_per_country))
+                Team::candidate.points() < current_team.points() 
+                && current_team.at_least_1_per_discipline() 
+                && current_team.per_country_max(max_per_country)
+            )
         {
             Team::candidate.athletes.assign(current_team.athletes.begin(), current_team.athletes.end());
         }
@@ -49,10 +52,12 @@ void solver(Team &current_team, std::vector<Athlete> &athletes, int last_incorpo
         {
             // get candidate ath;
             Athlete *candidate = &athletes[last_incorpored_idx];
-            if ( remaining_budget > candidate->price
-                && current_team.max_size - current_team.size() + last_incorpored_idx < athletes.size()
-                && (current_team.max_size - current_team.size()) * athletes[last_incorpored_idx+1].points + current_team.points() > Team::candidate.points()
-                )
+
+            if( (current_team.max_size - current_team.size()) * candidate->points + current_team.points() < Team::candidate.points() )
+            {
+                return;
+            }
+            else if ( remaining_budget > candidate->price )
             {
                 current_team.push(candidate);
                 solver(current_team, athletes, last_incorpored_idx, remaining_budget - candidate->price, max_per_country);
@@ -62,9 +67,9 @@ void solver(Team &current_team, std::vector<Athlete> &athletes, int last_incorpo
     }
 }
 
-#define TEAM_SIZE 7
+#define TEAM_SIZE 10
 #define MAX_PER_COUNTRY 2
-#define INITIAL_BUDGET 20000
+#define INITIAL_BUDGET 30000
 
 Team Team::candidate(TEAM_SIZE);
 
@@ -74,7 +79,10 @@ int main()
 
     Team current_team(TEAM_SIZE);
 
-    solver(current_team, athletes, -1, INITIAL_BUDGET, MAX_PER_COUNTRY);
+    {
+        Timer t;
+        solver(current_team, athletes, -1, INITIAL_BUDGET, MAX_PER_COUNTRY);
+    }
 
     Team::candidate.print();
 
