@@ -24,27 +24,17 @@ void  Team::pop()
 
 int  Team::total_price() const
 {   
-    int total_price = 0;
-    for(const auto* ath: athletes)
-    {
-        total_price += ath->price;
-    }
-    return  total_price;
+    return std::accumulate(athletes.begin(), athletes.end(), 0,[](int sum, const Athlete* ath) { return sum + ath->price; });
 }
 
 int  Team::points() const
 {
-    int points = 0;
-    for(const auto* ath: athletes)
-    {
-        points += ath->points;
-    }
-    return  points;
+    return std::accumulate(athletes.begin(), athletes.end(), 0,[](int sum, const Athlete* ath) { return sum + ath->points; });
 }
 
-bool  Team::at_least_1_in(const std::string discipline) const
+bool  Team::at_least_1_in(const std::string& discipline) const
 {
-    for(const auto* ath: athletes )
+    for(const auto ath: athletes )
     {
         if(ath->discipline == discipline)
             return true;

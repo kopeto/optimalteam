@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include <set>
+
 
 #include "Team.h"
 #include "Timer.hpp"
@@ -30,7 +30,7 @@ auto get_all_athletes()
 void solver(std::vector<Athlete>::const_iterator current_candidate, std::vector<Athlete>::const_iterator last_candidate, Team &current_team, int remaining_budget, int max_per_country)
 {
     //TRIVIAL CASE
-    if (current_team.size() == current_team.max_size)
+    if (current_team.is_full())
     {
         //Apply Team constraints
         if (
@@ -54,10 +54,10 @@ void solver(std::vector<Athlete>::const_iterator current_candidate, std::vector<
             else if ( remaining_budget > current_candidate->price )
             {
                 current_team.push(&(*current_candidate));
-                solver(current_candidate+1, last_candidate, current_team, remaining_budget - current_candidate->price, max_per_country);
+                solver(std::next(current_candidate), last_candidate, current_team, remaining_budget - current_candidate->price, max_per_country);
                 current_team.pop();
             }
-            current_candidate++;
+            current_candidate = std::next(current_candidate);
         }
     }
 }
@@ -76,7 +76,7 @@ int main()
 
     {
         Timer t;
-        solver(athletes.begin(), athletes.end(), current_team, INITIAL_BUDGET, MAX_PER_COUNTRY);
+        solver(athletes.cbegin(), athletes.cend(), current_team, INITIAL_BUDGET, MAX_PER_COUNTRY);
     }
 
     Team::candidate.print();
