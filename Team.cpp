@@ -12,7 +12,7 @@ bool  Team::is_full() const
     return athletes.size() >= max_size;
 }
 
-void  Team::push(Athlete* ath)
+void  Team::push(const Athlete* ath)
 {
     athletes.push_back(ath);
 }
@@ -42,7 +42,7 @@ int  Team::points() const
     return  points;
 }
 
-bool  Team::at_least_1_in(std::string discipline) const
+bool  Team::at_least_1_in(const std::string discipline) const
 {
     for(const auto* ath: athletes )
     {

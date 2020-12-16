@@ -27,14 +27,11 @@ auto get_all_athletes()
     return athletes;
 }
 
-static int n = 0;
-
-void solver(Team &current_team, std::vector<Athlete> &athletes, int last_incorpored_idx, int remaining_budget, int max_per_country)
+void solver(std::vector<Athlete>::const_iterator current_candidate, std::vector<Athlete>::const_iterator last_candidate, Team &current_team, int remaining_budget, int max_per_country)
 {
     //TRIVIAL CASE
     if (current_team.size() == current_team.max_size)
     {
-        n++;
         //Apply Team constraints
         if (
                 Team::candidate.points() < current_team.points() 
@@ -45,46 +42,43 @@ void solver(Team &current_team, std::vector<Athlete> &athletes, int last_incorpo
             Team::candidate.athletes.assign(current_team.athletes.begin(), current_team.athletes.end());
         }
     }
-    //INTERMEDIATE CASES
+    //RECURSIVE CASE
     else
     {
-        while (++last_incorpored_idx < athletes.size())
+        while (current_candidate != last_candidate)
         {
-            // get candidate ath;
-            Athlete *candidate = &athletes[last_incorpored_idx];
-
-            if( (current_team.max_size - current_team.size()) * candidate->points + current_team.points() < Team::candidate.points() )
+            if( (current_team.max_size - current_team.size()) * current_candidate->points + current_team.points() < Team::candidate.points() )
             {
                 return;
             }
-            else if ( remaining_budget > candidate->price )
+            else if ( remaining_budget > current_candidate->price )
             {
-                current_team.push(candidate);
-                solver(current_team, athletes, last_incorpored_idx, remaining_budget - candidate->price, max_per_country);
+                current_team.push(&(*current_candidate));
+                solver(current_candidate+1, last_candidate, current_team, remaining_budget - current_candidate->price, max_per_country);
                 current_team.pop();
             }
+            current_candidate++;
         }
     }
 }
 
-#define TEAM_SIZE 10
+#define TEAM_SIZE 7
 #define MAX_PER_COUNTRY 2
-#define INITIAL_BUDGET 30000
+#define INITIAL_BUDGET 25000
 
 Team Team::candidate(TEAM_SIZE);
 
 int main()
 {
-    auto athletes = get_all_athletes();
-
+    const auto athletes = get_all_athletes();
+    
     Team current_team(TEAM_SIZE);
 
     {
         Timer t;
-        solver(current_team, athletes, -1, INITIAL_BUDGET, MAX_PER_COUNTRY);
+        solver(athletes.begin(), athletes.end(), current_team, INITIAL_BUDGET, MAX_PER_COUNTRY);
     }
 
     Team::candidate.print();
 
-    std::cout << n << "\n";
 }

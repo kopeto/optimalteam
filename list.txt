@@ -86,7 +86,7 @@ Lena  	9565	68	AUT	K1M
 Teodoro  	8332	28	AND	C1W
 Cassi  	6827	32	ESP	C1M
 Oren  	4260	65	AUS	C1M
-Leopoldo  	574	96	ESP	C1M
+Leopoldo  	574	96	FRA	C1M
 Erich  	5242	78	ITA	K1M
 Zella  	1863	62	ESP	K1M
 Lonnie  	3319	96	JPN	C1W
