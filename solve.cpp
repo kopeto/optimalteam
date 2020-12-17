@@ -2,8 +2,6 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-
-
 #include "Team.h"
 #include "Timer.hpp"
 
@@ -12,14 +10,16 @@ auto get_all_athletes()
     int n;
     std::cin >> n;
     std::vector<Athlete> athletes(n);
-    for (int i = 0; i < n; ++i)
-    {
-        std::cin >> athletes[i].name;
-        std::cin >> athletes[i].price;
-        std::cin >> athletes[i].points;
-        std::cin >> athletes[i].country;
-        std::cin >> athletes[i].discipline;
-    }
+    std::for_each (athletes.begin(), athletes.end(), [](Athlete& athlete) {
+        std::cin >> athlete.name;
+        std::cin >> athlete.price;
+        std::cin >> athlete.points;
+        std::cin >> athlete.country;
+        std::string discipline;
+        std::cin >> discipline;
+        athlete.discipline = str_to_discipline(discipline);
+    });
+
     //sort by points
     std::sort(athletes.begin(), athletes.end(), [](Athlete a1, Athlete a2) {
         return a1.points > a2.points;
@@ -27,7 +27,8 @@ auto get_all_athletes()
     return athletes;
 }
 
-void solver(std::vector<Athlete>::const_iterator current_candidate, std::vector<Athlete>::const_iterator last_candidate, Team &current_team, Team &best_team, int remaining_budget, int max_per_country)
+
+void solver(std::vector<Athlete>::const_iterator current_candidate, std::vector<Athlete>::const_iterator last_candidate, Team &current_team, Team &best_team, const int remaining_budget, const int max_per_country)
 {
     //TRIVIAL CASE
     if (current_team.is_full())
@@ -64,9 +65,9 @@ void solver(std::vector<Athlete>::const_iterator current_candidate, std::vector<
 
 int main()
 {
-    const int TEAM_SIZE = 7;
-    const int MAX_PER_COUNTRY = 2;
-    const int INITIAL_BUDGET = 25000;
+    constexpr int TEAM_SIZE  {7};
+    constexpr int MAX_PER_COUNTRY = {2};
+    constexpr int INITIAL_BUDGET = {25000};
 
     const auto athletes = get_all_athletes();
     
@@ -79,5 +80,4 @@ int main()
     }
 
     best_team.print();
-
 }

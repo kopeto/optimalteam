@@ -1,59 +1,106 @@
 #include "Team.h"
 
-Team::Team(const int MAX_SIZE) : max_size(MAX_SIZE) {} 
+Discipline str_to_discipline(std::string &discipline)
+{
+    std::runtime_error InvalideDiscipline("RUNTIME ERROR: Invalid discipline.\n");
+
+    std::for_each(discipline.begin(),discipline.end(),[](char& c){ c=std::toupper(c);});
+
+    if (discipline == "C1M")
+    {
+        return Discipline::C1M;
+    }
+    else if (discipline == "C1W")
+    {
+        return Discipline::C1W;
+    }
+    else if (discipline == "K1M")
+    {
+        return Discipline::K1M;
+    }
+    else if (discipline == "K1W")
+    {
+        return Discipline::K1W;
+    }
+
+    std::cout << "\"" << discipline << "\" not recognized.\n";
+    throw InvalideDiscipline;
+}
+
+std::string discipline_to_string(Discipline discipline)
+{
+    std::runtime_error InvalideDiscipline("RUNTIME ERROR: Invalid discipline.\n");
+
+    switch (discipline)
+    {
+    case Discipline::C1M:
+        return std::string("C1M");
+        break;
+    case Discipline::C1W:
+        return std::string("C1W");
+        break;
+    case Discipline::K1M:
+        return std::string("K1M");
+        break;
+    case Discipline::K1W:
+        return std::string("K1W");
+        break;
+    default:
+        break;
+    }
+
+    throw InvalideDiscipline;
+}
+
+Team::Team(const int MAX_SIZE) : max_size(MAX_SIZE) {}
 
 size_t Team::size() const
 {
     return athletes.size();
 }
 
-bool  Team::is_full() const
+bool Team::is_full() const
 {
     return athletes.size() >= max_size;
 }
 
-void  Team::push(const Athlete* ath)
+void Team::push(const Athlete *ath)
 {
     athletes.push_back(ath);
 }
 
-void  Team::pop()
+void Team::pop()
 {
     athletes.pop_back();
 }
 
-int  Team::total_price() const
-{   
-    return std::accumulate(athletes.begin(), athletes.end(), 0,[](int sum, const Athlete* ath) { return sum + ath->price; });
+int Team::total_price() const
+{
+    return std::accumulate(athletes.cbegin(), athletes.cend(), 0, [](int sum, const Athlete *ath) { return sum + ath->price; });
 }
 
-int  Team::total_points() const
+int Team::total_points() const
 {
-    return std::accumulate(athletes.begin(), athletes.end(), 0,[](int sum, const Athlete* ath) { return sum + ath->points; });
+    return std::accumulate(athletes.cbegin(), athletes.cend(), 0, [](int sum, const Athlete *ath) { return sum + ath->points; });
 }
 
-bool  Team::at_least_1_in(const std::string& discipline) const
+bool Team::at_least_1_in(Discipline discipline) const
 {
-    for(const auto ath: athletes )
+    return std::find_if(athletes.cbegin(), athletes.cend(), [&discipline](const Athlete* ath){ return ath->discipline == discipline; }) != athletes.cend();
+}
+
+bool Team::at_least_1_per_discipline() const
+{
+    return at_least_1_in(Discipline::C1M) && at_least_1_in(Discipline::C1W) && at_least_1_in(Discipline::K1M) && at_least_1_in(Discipline::K1W);
+}
+
+bool Team::per_country_max(const int max_per_country) const
+{
+    for (const auto ath_outter : athletes)
     {
-        if(ath->discipline == discipline)
-            return true;
-    }
-    return false;
-}
-
-bool  Team::at_least_1_per_discipline() const
-{
-    return at_least_1_in("C1M") && at_least_1_in("C1W") && at_least_1_in("K1M") && at_least_1_in("K1W");
-}
-
-bool  Team::per_country_max(const int max_per_country) const
-{
-    std::multiset<std::string> countries;
-    for (const auto ath : athletes)
-    {
-        countries.insert(ath->country);
-        if (countries.count(ath->country) > max_per_country)
+        if (max_per_country < std::count_if(athletes.cbegin(), athletes.cend(), [ath_outter](const Athlete* ath_inner){
+            return ath_inner->country == ath_outter->country ;
+        }))
         {
             return false;
         }
@@ -61,13 +108,12 @@ bool  Team::per_country_max(const int max_per_country) const
     return true;
 }
 
-
-void  Team::print() const
+void Team::print() const
 {
-    for (const auto ath : athletes)
+    std::for_each(athletes.cbegin(), athletes.cend(), [](const Athlete* ath)
     {
-        printf("%4d %9s %4s %4s %5d\n", ath->points, ath->name.c_str(), ath->discipline.c_str(), ath->country.c_str(), ath->price);
-    }
+        printf("%4d %9s %4s %4s %5d\n", ath->points, ath->name.c_str(), discipline_to_string(ath->discipline).c_str(), ath->country.c_str(), ath->price);
+    });
     printf("------------------------------\n");
     printf("%4d %19s %5d\n", total_points(), "", total_price());
 }
