@@ -1,6 +1,6 @@
 #include "Team.h"
 
-Team::Team(const int SIZE) : max_size(SIZE) {}
+Team::Team(const int MAX_SIZE) : max_size(MAX_SIZE) {} 
 
 size_t Team::size() const
 {
@@ -27,7 +27,7 @@ int  Team::total_price() const
     return std::accumulate(athletes.begin(), athletes.end(), 0,[](int sum, const Athlete* ath) { return sum + ath->price; });
 }
 
-int  Team::points() const
+int  Team::total_points() const
 {
     return std::accumulate(athletes.begin(), athletes.end(), 0,[](int sum, const Athlete* ath) { return sum + ath->points; });
 }
@@ -64,16 +64,10 @@ bool  Team::per_country_max(const int max_per_country) const
 
 void  Team::print() const
 {
-    int points = 0;
-    int price = 0;
     for (const auto ath : athletes)
     {
-        if (ath)
-        {
-            printf("%16s | %3s | %3s | %5d | %d\n", ath->name.c_str(), ath->country.c_str(), ath->discipline.c_str(), ath->points, ath->price);
-        }
+        printf("%4d %9s %4s %4s %5d\n", ath->points, ath->name.c_str(), ath->discipline.c_str(), ath->country.c_str(), ath->price);
     }
-
-    std::cout << "Price:  " << Team::candidate.total_price() << "\n";
-    std::cout << "Points: " << Team::candidate.points() << "\n";
+    printf("------------------------------\n");
+    printf("%4d %19s %5d\n", total_points(), "", total_price());
 }
