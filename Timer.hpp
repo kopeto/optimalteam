@@ -21,7 +21,7 @@
 class Timer{
 
 public:
-	Timer();
+	Timer(double* count=nullptr);
 	~Timer();
 
 	void Stop();
@@ -29,6 +29,7 @@ public:
 	void BENCHMARK_RATE(uint64_t);
 
 private:
+	double* counter=nullptr;
 	std::chrono::time_point<std::chrono::high_resolution_clock> m_StartTimePoint;
 };
 

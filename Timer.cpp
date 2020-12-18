@@ -4,8 +4,9 @@
 #include <chrono>
 #include <cstdio>
 
-Timer::Timer(){
+Timer::Timer(double* _counter){
 	m_StartTimePoint = std::chrono::high_resolution_clock::now();
+	counter = _counter;
 }
 
 Timer::~Timer(){
@@ -14,6 +15,14 @@ Timer::~Timer(){
 
 void Timer::Stop(){
 	auto duration =duration_now();
+
+	if(counter != nullptr)
+	{
+		*counter = duration;
+		return;
+	}
+
+
 	std::string scale = "us";
 	double val = duration;
 	if(duration>1000.0){

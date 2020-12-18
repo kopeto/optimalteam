@@ -48,7 +48,7 @@ void solver(std::vector<Athlete>::const_iterator current_candidate, std::vector<
     {
         while (current_candidate != last_candidate)
         {
-            if( (current_team.max_size - current_team.size()) * current_candidate->points + current_team.total_points() < best_team.total_points() )
+            if( static_cast<int>(current_team.max_size - current_team.size()) * current_candidate->points + current_team.total_points() < best_team.total_points() )
             {
                 return;
             }
