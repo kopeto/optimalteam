@@ -96,10 +96,10 @@ bool Team::at_least_1_per_discipline() const
 
 bool Team::per_country_max(const int max_per_country) const
 {
-    for (const auto ath_outter : athletes)
+    for(auto it = athletes.begin(); it != athletes.end(); ++it)
     {
-        if (max_per_country < std::count_if(athletes.cbegin(), athletes.cend(), [ath_outter](const Athlete* ath_inner){
-            return ath_inner->country == ath_outter->country ;
+        if (max_per_country < std::count_if(it, athletes.end(), [it](const Athlete* ath_inner){
+            return ath_inner->country == (*it)->country ;
         }))
         {
             return false;
@@ -110,10 +110,10 @@ bool Team::per_country_max(const int max_per_country) const
 
 void Team::print() const
 {
-    std::for_each(athletes.cbegin(), athletes.cend(), [](const Athlete* ath)
+    for(const auto ath: athletes)
     {
         printf("%4d %9s %4s %4s %5d\n", ath->points, ath->name.c_str(), discipline_to_string(ath->discipline).c_str(), ath->country.c_str(), ath->price);
-    });
+    }
     printf("------------------------------\n");
     printf("%4d %19s %5d\n", total_points(), "", total_price());
 }
