@@ -1,0 +1,7 @@
+6
+Digna  	6000  99	BRA	C1M
+Tiera   5000  98	BRA	C1W
+Cami  	5000	98	AND	K1M
+Mikel  	5000	98  NOR	K1W
+Allyn  	5000	98	SLO	C1M
+Prin  	1     1   POR	K1M
